@@ -42,7 +42,7 @@ $site1Library  = "Documents"   # Display name of the library on Site1
 $site2Library  = "Documents"   # Display name of the library on Site2
 ```
 
-> **Library names** must match the display name as shown in SharePoint, not the URL segment. For example, Romanian-locale tenants may use `"Documente partajate"` instead of `"Shared Documents"`. Run `Get-PnPList | Select-Object Title, RootFolder` against the site to confirm the correct name.
+> **Library names** must match the display name as shown in SharePoint, not the URL segment. Run `Get-PnPList | Select-Object Title, RootFolder` against the site to confirm the correct name.
 
 ## Usage
 
