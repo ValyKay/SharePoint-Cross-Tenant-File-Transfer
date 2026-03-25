@@ -1,11 +1,11 @@
 # SharePoint Cross-Tenant File Transfer
 
-A PowerShell script for manually transferring files between two SharePoint document libraries across different tenants — including guest/external access scenarios.
+A PowerShell script for manually transferring files between two SharePoint document libraries across different tenants - including guest/external access scenarios.
 
 ## What it does
 
 - Connects to a **source SharePoint site** (own tenant) and a **destination SharePoint site** (external/customer tenant where the user has guest contributor access)
-- Performs a **differential sync**: only files that are new or modified since the last run are transferred — unchanged files are skipped
+- Performs a **differential sync**: only files that are new or modified since the last run are transferred - unchanged files are skipped
 - Preserves **subfolder structure**
 - Generates a **per-session transfer report** (plain text, suitable for client handover) saved next to the script files
 - Maintains a **cumulative debug log** in `%TEMP%` for troubleshooting
@@ -13,7 +13,7 @@ A PowerShell script for manually transferring files between two SharePoint docum
 ## Requirements
 
 - Windows with **Windows PowerShell 5.1** (built-in, no install needed)
-- [PnP.PowerShell 1.12.0](https://www.powershellgallery.com/packages/PnP.PowerShell/1.12.0) — install once with:
+- [PnP.PowerShell 1.12.0](https://www.powershellgallery.com/packages/PnP.PowerShell/1.12.0) - install once with:
   ```powershell
   Install-Module PnP.PowerShell -RequiredVersion 1.12.0 -Scope CurrentUser -Force
   ```
@@ -25,8 +25,8 @@ A PowerShell script for manually transferring files between two SharePoint docum
 
 | File | Purpose |
 |------|---------|
-| `sp-transfer.ps1` | Main script — configure this before first use |
-| `sp-transfer.bat` | Launcher — users double-click this to run |
+| `sp-transfer.ps1` | Main script - configure this before first use |
+| `sp-transfer.bat` | Launcher - users double-click this to run |
 
 Both files must be kept in the same folder.
 
@@ -83,7 +83,7 @@ Failed (0)
 
 ## Authentication
 
-Uses `-UseWebLogin` (interactive browser popup) for both connections. This handles MFA and cross-tenant guest authentication without requiring app registrations or certificates. Tokens are not cached between runs — the user logs in fresh each time.
+Uses `-UseWebLogin` (interactive browser popup) for both connections. This handles MFA and cross-tenant guest authentication without requiring app registrations or certificates. Tokens are not cached between runs - the user logs in fresh each time.
 
 ## Logs
 
