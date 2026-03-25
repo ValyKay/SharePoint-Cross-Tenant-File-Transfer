@@ -95,5 +95,5 @@ Uses `-UseWebLogin` (interactive browser popup) for both connections. This handl
 ## Notes
 
 - Files are transferred one at a time: downloaded to a local temp folder, uploaded to Site2, then the local copy is deleted immediately. Peak local disk usage is one file at a time.
-- The script is safe to run multiple times — `Add-PnPFile` overwrites the destination if the source is newer.
+- The script is safe to run multiple times - `Add-PnPFile` overwrites the destination if the source is newer.
 - The update warning (`A newer version of PnP PowerShell is available`) that appears on connect is harmless and can be ignored.
