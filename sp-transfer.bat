@@ -1,0 +1,1 @@
+@PowerShell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0sp-transfer.ps1"
