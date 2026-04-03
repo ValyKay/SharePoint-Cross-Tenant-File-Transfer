@@ -3,7 +3,15 @@
 #  Only transfers files that are new or modified since last run
 #  Produces a per-session transfer report next to this script
 #  Run manually by double-clicking sp-transfer.bat
+#
+#  Usage:
+#    .\sp-transfer.ps1              # normal transfer
+#    .\sp-transfer.ps1 -DryRun     # preview only, no files transferred
 # ============================================================
+
+param(
+    [switch]$DryRun
+)
 
 # -- CONFIGURATION -- edit these values before first use -----
 $site1Url       = "https://sharepoint-site-1-replace-this"
@@ -45,10 +53,15 @@ if (-not (Get-Module -ListAvailable -Name PnP.PowerShell)) {
 # -- Start ---------------------------------------------------
 Clear-Host
 Write-Host ""
-Write-Host "  SharePoint File Transfer" -ForegroundColor Cyan
-Write-Host "  ========================" -ForegroundColor Cyan
+if ($DryRun) {
+    Write-Host "  SharePoint File Transfer  [DRY RUN]" -ForegroundColor Yellow
+    Write-Host "  =====================================" -ForegroundColor Yellow
+} else {
+    Write-Host "  SharePoint File Transfer" -ForegroundColor Cyan
+    Write-Host "  ========================" -ForegroundColor Cyan
+}
 Write-Host ""
-Write-Log "Session started"
+Write-Log "Session started$(if ($DryRun) { ' (DRY RUN)' })"
 
 New-Item -ItemType Directory -Path $tempPath | Out-Null
 
@@ -197,7 +210,55 @@ if ($toTransfer.Count -eq 0) {
     exit 0
 }
 
-# -- Step 5: Transfer ----------------------------------------
+# -- Step 5: Transfer (or preview in dry-run mode) ----------
+
+if ($DryRun) {
+    # -- Dry-run: preview what would be transferred -------------
+    Write-Host ""
+    Write-Log "DRY RUN -- listing files that would be transferred:" "Yellow"
+
+    $counter = 0
+    foreach ($entry in $toTransfer) {
+        $counter++
+        $progress = "$counter/$($toTransfer.Count)"
+        Write-Log "  [$progress] [$($entry.Status)] $($entry.RelativePath)" "Yellow"
+    }
+
+    # -- Write dry-run report -----------------------------------
+    Write-Report "SharePoint Transfer Report  [DRY RUN]"
+    Write-Report "======================================"
+    Write-Report "Date/Time : $(Get-Date -Format 'yyyy-MM-dd  HH:mm:ss')"
+    Write-Report "Operator  : $operator"
+    Write-Report ""
+    Write-Report "** No files were transferred -- this was a dry run **"
+    Write-Report ""
+    Write-Report "Files that would be transferred ($($toTransfer.Count))"
+    Write-Report ("-" * 40)
+    foreach ($e in $toTransfer) {
+        $tag = "[$($e.Status)]".PadRight(10)
+        Write-Report "  $tag $($e.RelativePath)"
+    }
+    Write-Report ""
+    Write-Report "Files already up to date (would be skipped) : $skipped"
+    Write-Report ""
+
+    Remove-Item $tempPath -Recurse -Force -ErrorAction SilentlyContinue
+
+    Write-Log "Dry run complete. Would transfer: $($toTransfer.Count) | Already up to date: $skipped"
+
+    Write-Host ""
+    Write-Host "  ============================================" -ForegroundColor Yellow
+    Write-Host "  DRY RUN complete. No files were transferred." -ForegroundColor Yellow
+    Write-Host "  Would transfer : $($toTransfer.Count) file(s)" -ForegroundColor Yellow
+    Write-Host "  Already current: $skipped file(s)" -ForegroundColor Gray
+    Write-Host "  Report         : $reportFile" -ForegroundColor Gray
+    Write-Host "  ============================================" -ForegroundColor Yellow
+    Write-Host ""
+    Read-Host "Press Enter to close"
+    exit 0
+}
+
+# -- Actual transfer -----------------------------------------
 Write-Host ""
 Write-Log "Starting transfer..." "Cyan"
 
