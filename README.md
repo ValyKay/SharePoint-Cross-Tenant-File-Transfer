@@ -17,7 +17,7 @@ A PowerShell script for manually transferring files between two SharePoint docum
   ```powershell
   Install-Module PnP.PowerShell -RequiredVersion 1.12.0 -Scope CurrentUser -Force
   ```
-  > Version 1.12.0 specifically is required — newer versions (2.x, 3.x) require PowerShell 7 and will not be found by Windows PowerShell 5.1.
+  > Version 1.12.0 specifically is required - newer versions (2.x, 3.x) require PowerShell 7 and will not be found by Windows PowerShell 5.1.
 - Contributor access on the destination SharePoint site (guest/external invitation is sufficient)
 - No admin rights needed for either installation or execution
 
@@ -26,7 +26,7 @@ A PowerShell script for manually transferring files between two SharePoint docum
 | File | Purpose |
 |------|---------|
 | `sp-transfer.ps1` | Main script - configure this before first use |
-| `sp-transfer.bat` | Launcher - users double-click this to run |
+| `sp-transfer.bat` | Launcher - users double-click this, choose normal sync or dry run |
 
 Both files must be kept in the same folder.
 
@@ -47,10 +47,25 @@ $site2Library  = "Documents"   # Display name of the library on Site2
 ## Usage
 
 1. Double-click `sp-transfer.bat`
-2. Log in to Site1 in the browser window that opens
-3. Log in to Site2 in the second browser window (same account, guest access)
-4. Wait for the transfer to complete
-5. Press Enter to close — the report is saved automatically
+2. Select mode: **1** for normal sync, **2** for dry run (preview only)
+3. Log in to Site1 in the browser window that opens
+4. Log in to Site2 in the second browser window (same account, guest access)
+5. Wait for the transfer to complete (or preview to finish)
+6. Press Enter to close - the report is saved automatically
+
+### Dry run
+
+Dry run connects to both sites, compares files, and shows exactly what *would* be transferred - without downloading or uploading anything. Useful for verifying the diff before committing to a transfer.
+
+```powershell
+# Via the bat launcher: select option 2
+sp-transfer.bat
+
+# Or directly:
+.\sp-transfer.ps1 -DryRun
+```
+
+The dry-run report is clearly marked `[DRY RUN]` and lists all files that would be transferred with their `[NEW]` or `[UPDATED]` status.
 
 ## Transfer report
 
