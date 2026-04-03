@@ -25,14 +25,16 @@ A PowerShell script for manually transferring files between two SharePoint docum
 
 | File | Purpose |
 |------|---------|
-| `sp-transfer.ps1` | Main script - configure this before first use |
-| `sp-transfer.bat` | Launcher - users double-click this, choose normal sync or dry run |
+| `sp-transfer.ps1` | Main script |
+| `sp-transfer.bat` | Launcher - double-click this to run |
+| `sp-transfer-config.ps1` | Your configuration (never overwritten by upgrades) |
+| `sp-upgrade.ps1` | Self-updater - downloads latest scripts from GitHub |
 
-Both files must be kept in the same folder.
+All files must be kept in the same folder.
 
 ## Configuration
 
-Open `sp-transfer.ps1` and edit the block at the top:
+Edit `sp-transfer-config.ps1` (created on first download, never overwritten by upgrades):
 
 ```powershell
 $site1Url      = "https://yourcompany.sharepoint.com/sites/Site1"
@@ -47,7 +49,7 @@ $site2Library  = "Documents"   # Display name of the library on Site2
 ## Usage
 
 1. Double-click `sp-transfer.bat`
-2. Select mode: **1** for normal sync, **2** for dry run (preview only)
+2. Select mode: **1** for normal sync, **2** for dry run (preview only), **3** to upgrade
 3. Log in to Site1 in the browser window that opens
 4. Log in to Site2 in the second browser window (same account, guest access)
 5. Wait for the transfer to complete (or preview to finish)
@@ -66,6 +68,10 @@ sp-transfer.bat
 ```
 
 The dry-run report is clearly marked `[DRY RUN]` and lists all files that would be transferred with their `[NEW]` or `[UPDATED]` status.
+
+### Upgrading
+
+Select option **3** from the bat menu (or run `sp-upgrade.ps1` directly). This downloads the latest `sp-transfer.ps1`, `sp-transfer.bat`, and `sp-upgrade.ps1` from GitHub. Your configuration in `sp-transfer-config.ps1` is never modified. A `.bak` backup of each file is created before overwriting.
 
 ## Transfer report
 
