@@ -2,6 +2,7 @@
 #  SharePoint Cross-Tenant File Transfer -- Differential Sync
 #  Only transfers files that are new or modified since last run
 #  Produces a per-session transfer report next to this script
+#  Configuration lives in sp-transfer-config.ps1 (not overwritten by upgrades)
 #  Run manually by double-clicking sp-transfer.bat
 #
 #  Usage:
@@ -13,12 +14,23 @@ param(
     [switch]$DryRun
 )
 
-# -- CONFIGURATION -- edit these values before first use -----
-$site1Url       = "https://sharepoint-site-1-replace-this"
-$site2Url       = "https://sharepoint-site-2-replace-this"
-
-$site1Library   = "Shared Documents"   	# Library display name on Site1 - get from URL - this is the English generic
-$site2Library   = "Shared Documents"    # Library display name on Site2 - get from URL - this is the English generic
+# -- CONFIGURATION -- loaded from sp-transfer-config.ps1 -----
+$configFile = Join-Path $PSScriptRoot "sp-transfer-config.ps1"
+if (-not (Test-Path $configFile)) {
+    Write-Host ""
+    Write-Host "  Configuration file not found!" -ForegroundColor Red
+    Write-Host "  Expected: $configFile" -ForegroundColor Yellow
+    Write-Host ""
+    Write-Host "  Create sp-transfer-config.ps1 next to this script with:" -ForegroundColor Yellow
+    Write-Host '    $site1Url     = "https://your-site1-url"' -ForegroundColor Cyan
+    Write-Host '    $site2Url     = "https://your-site2-url"' -ForegroundColor Cyan
+    Write-Host '    $site1Library = "Shared Documents"' -ForegroundColor Cyan
+    Write-Host '    $site2Library = "Shared Documents"' -ForegroundColor Cyan
+    Write-Host ""
+    Read-Host "Press Enter to exit"
+    exit 1
+}
+. $configFile
 # ------------------------------------------------------------
 
 $sessionStamp   = Get-Date -Format "yyyy-MM-dd_HHmmss"
