@@ -3,7 +3,7 @@
 A PowerShell script for manually transferring files between two SharePoint document libraries across different tenants - including guest/external access scenarios.
 
 ## Intended scenario
-A single or a limited set of users from your organization have been granted guest access to the orher's organization SharePoint Site. Work is delegated within your organization across users and/or departments. The script enables your organization to perform automated partial submissions, by mirroring your SharePoint site you have set up for the project.
+A single or a limited set of users from your organization have been granted guest access to the other's organization SharePoint Site. Work is delegated within your organization across users and/or departments. The script enables your organization to perform automated partial submissions, by mirroring your SharePoint site you have set up for the project.
 
 ## What it does
 
